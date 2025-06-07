@@ -2,7 +2,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { useAppDispatch, useAppSelector } from '@/hooks/useAppDispatch';
+import { useAppDispatch } from '@/hooks/useAppDispatch';
+import { useAppSelector } from '@/hooks/useAppSelector';
 import { logout } from '@/store/slices/authSlice';
 import { Heart, LogOut, User } from 'lucide-react';
 import { toast } from 'sonner';
