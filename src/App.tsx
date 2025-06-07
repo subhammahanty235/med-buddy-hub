@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import AIDoctors from "./pages/AIDoctors";
 import Chat from "./pages/Chat";
+import Visits from "./pages/Visits";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -39,19 +40,19 @@ const App = () => (
                 <Chat />
               </ProtectedRoute>
             } />
-            <Route path="/blogs" element={
+            <Route path="/visits" element={
               <ProtectedRoute>
-                <Navigate to="/" />
+                <Visits />
               </ProtectedRoute>
             } />
-            <Route path="/visits" element={
+            <Route path="/blogs" element={
               <ProtectedRoute>
                 <Navigate to="/" />
               </ProtectedRoute>
             } />
             <Route path="/bookings" element={
               <ProtectedRoute>
-                <Navigate to="/" />
+                <Navigate to="/visits" />
               </ProtectedRoute>
             } />
             <Route path="*" element={<NotFound />} />
