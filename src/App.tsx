@@ -73,17 +73,17 @@ const App = () => (
             } />
             <Route path="/doctor/calendar" element={
               <ProtectedRoute userType="doctor">
-                <div>Calendar Page - Coming Soon</div>
+                <DoctorCalendar />
               </ProtectedRoute>
             } />
             <Route path="/doctor/earnings" element={
               <ProtectedRoute userType="doctor">
-                <div>Earnings Page - Coming Soon</div>
+                <DoctorEarnings />
               </ProtectedRoute>
             } />
             <Route path="/doctor/feedback" element={
               <ProtectedRoute userType="doctor">
-                <div>Feedback Page - Coming Soon</div>
+                <DoctorFeedback />
               </ProtectedRoute>
             } />
             <Route path="/doctor/profile" element={
