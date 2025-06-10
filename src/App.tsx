@@ -17,6 +17,8 @@ import DoctorBookings from "./pages/doctor/DoctorBookings";
 import DoctorCalendar from "./pages/doctor/DoctorCalendar";
 import DoctorEarnings from "./pages/doctor/DoctorEarnings";
 import DoctorFeedback from "./pages/doctor/DoctorFeedback";
+import DoctorProfile from "./pages/doctor/DoctorProfile";
+import DoctorSupport from "./pages/doctor/DoctorSupport";
 
 const queryClient = new QueryClient();
 
@@ -90,12 +92,12 @@ const App = () => (
             } />
             <Route path="/doctor/profile" element={
               <ProtectedRoute userType="doctor">
-                <div>Profile Page - Coming Soon</div>
+                <DoctorProfile />
               </ProtectedRoute>
             } />
             <Route path="/doctor/support" element={
               <ProtectedRoute userType="doctor">
-                <div>Support Page - Coming Soon</div>
+                <DoctorSupport />
               </ProtectedRoute>
             } />
             
