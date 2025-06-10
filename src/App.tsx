@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -19,6 +20,7 @@ import DoctorEarnings from "./pages/doctor/DoctorEarnings";
 import DoctorFeedback from "./pages/doctor/DoctorFeedback";
 import DoctorProfile from "./pages/doctor/DoctorProfile";
 import DoctorSupport from "./pages/doctor/DoctorSupport";
+import CommunicationDemo from "./pages/CommunicationDemo";
 
 const queryClient = new QueryClient();
 
@@ -51,6 +53,11 @@ const App = () => (
             <Route path="/visits" element={
               <ProtectedRoute userType="patient">
                 <Visits />
+              </ProtectedRoute>
+            } />
+            <Route path="/communication/patient" element={
+              <ProtectedRoute userType="patient">
+                <CommunicationDemo userType="patient" />
               </ProtectedRoute>
             } />
             <Route path="/blogs" element={
@@ -98,6 +105,11 @@ const App = () => (
             <Route path="/doctor/support" element={
               <ProtectedRoute userType="doctor">
                 <DoctorSupport />
+              </ProtectedRoute>
+            } />
+            <Route path="/doctor/communication" element={
+              <ProtectedRoute userType="doctor">
+                <CommunicationDemo userType="doctor" />
               </ProtectedRoute>
             } />
             

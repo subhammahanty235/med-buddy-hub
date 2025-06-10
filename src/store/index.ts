@@ -9,6 +9,7 @@ import doctorBookingsSlice from './slices/doctorBookingsSlice';
 import doctorEarningsSlice from './slices/doctorEarningsSlice';
 import doctorCalendarSlice from './slices/doctorCalendarSlice';
 import supportSlice from './slices/supportSlice';
+import communicationSlice from './slices/communicationSlice';
 
 export const store = configureStore({
   reducer: {
@@ -21,6 +22,7 @@ export const store = configureStore({
     doctorEarnings: doctorEarningsSlice,
     doctorCalendar: doctorCalendarSlice,
     support: supportSlice,
+    communication: communicationSlice,
   },
 });
 
