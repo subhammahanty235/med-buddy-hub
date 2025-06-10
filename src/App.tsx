@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -15,6 +14,9 @@ import Visits from "./pages/Visits";
 import NotFound from "./pages/NotFound";
 import DoctorDashboard from "./pages/doctor/DoctorDashboard";
 import DoctorBookings from "./pages/doctor/DoctorBookings";
+import DoctorCalendar from "./pages/doctor/DoctorCalendar";
+import DoctorEarnings from "./pages/doctor/DoctorEarnings";
+import DoctorFeedback from "./pages/doctor/DoctorFeedback";
 
 const queryClient = new QueryClient();
 
