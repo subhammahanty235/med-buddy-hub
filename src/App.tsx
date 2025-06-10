@@ -13,6 +13,8 @@ import AIDoctors from "./pages/AIDoctors";
 import Chat from "./pages/Chat";
 import Visits from "./pages/Visits";
 import NotFound from "./pages/NotFound";
+import DoctorDashboard from "./pages/doctor/DoctorDashboard";
+import DoctorBookings from "./pages/doctor/DoctorBookings";
 
 const queryClient = new QueryClient();
 
@@ -25,36 +27,76 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/login" element={<Login />} />
+            
+            {/* Patient Routes */}
             <Route path="/" element={
-              <ProtectedRoute>
+              <ProtectedRoute userType="patient">
                 <Dashboard />
               </ProtectedRoute>
             } />
             <Route path="/ai-doctors" element={
-              <ProtectedRoute>
+              <ProtectedRoute userType="patient">
                 <AIDoctors />
               </ProtectedRoute>
             } />
             <Route path="/chat/:doctorId" element={
-              <ProtectedRoute>
+              <ProtectedRoute userType="patient">
                 <Chat />
               </ProtectedRoute>
             } />
             <Route path="/visits" element={
-              <ProtectedRoute>
+              <ProtectedRoute userType="patient">
                 <Visits />
               </ProtectedRoute>
             } />
             <Route path="/blogs" element={
-              <ProtectedRoute>
+              <ProtectedRoute userType="patient">
                 <Navigate to="/" />
               </ProtectedRoute>
             } />
             <Route path="/bookings" element={
-              <ProtectedRoute>
+              <ProtectedRoute userType="patient">
                 <Navigate to="/visits" />
               </ProtectedRoute>
             } />
+
+            {/* Doctor Routes */}
+            <Route path="/doctor/dashboard" element={
+              <ProtectedRoute userType="doctor">
+                <DoctorDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/doctor/bookings" element={
+              <ProtectedRoute userType="doctor">
+                <DoctorBookings />
+              </ProtectedRoute>
+            } />
+            <Route path="/doctor/calendar" element={
+              <ProtectedRoute userType="doctor">
+                <div>Calendar Page - Coming Soon</div>
+              </ProtectedRoute>
+            } />
+            <Route path="/doctor/earnings" element={
+              <ProtectedRoute userType="doctor">
+                <div>Earnings Page - Coming Soon</div>
+              </ProtectedRoute>
+            } />
+            <Route path="/doctor/feedback" element={
+              <ProtectedRoute userType="doctor">
+                <div>Feedback Page - Coming Soon</div>
+              </ProtectedRoute>
+            } />
+            <Route path="/doctor/profile" element={
+              <ProtectedRoute userType="doctor">
+                <div>Profile Page - Coming Soon</div>
+              </ProtectedRoute>
+            } />
+            <Route path="/doctor/support" element={
+              <ProtectedRoute userType="doctor">
+                <div>Support Page - Coming Soon</div>
+              </ProtectedRoute>
+            } />
+            
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

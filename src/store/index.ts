@@ -5,6 +5,10 @@ import doctorsSlice from './slices/doctorsSlice';
 import bookingsSlice from './slices/bookingsSlice';
 import chatSlice from './slices/chatSlice';
 import blogsSlice from './slices/blogsSlice';
+import doctorBookingsSlice from './slices/doctorBookingsSlice';
+import doctorEarningsSlice from './slices/doctorEarningsSlice';
+import doctorCalendarSlice from './slices/doctorCalendarSlice';
+import supportSlice from './slices/supportSlice';
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +17,10 @@ export const store = configureStore({
     bookings: bookingsSlice,
     chat: chatSlice,
     blogs: blogsSlice,
+    doctorBookings: doctorBookingsSlice,
+    doctorEarnings: doctorEarningsSlice,
+    doctorCalendar: doctorCalendarSlice,
+    support: supportSlice,
   },
 });
 

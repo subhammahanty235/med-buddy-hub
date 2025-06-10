@@ -10,13 +10,14 @@ import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { loginWithEmail, signupWithEmail, loginWithOTP } from '@/store/slices/authSlice';
 import { toast } from 'sonner';
-import { Mail, Phone, Heart } from 'lucide-react';
+import { Mail, Phone, Heart, Stethoscope, User } from 'lucide-react';
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { loading, error } = useAppSelector((state) => state.auth);
 
+  const [userType, setUserType] = useState<'patient' | 'doctor'>('patient');
   const [emailForm, setEmailForm] = useState({
     email: '',
     password: '',
@@ -32,12 +33,19 @@ const Login = () => {
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await dispatch(loginWithEmail({ 
+      const result = await dispatch(loginWithEmail({ 
         email: emailForm.email, 
-        password: emailForm.password 
+        password: emailForm.password,
+        userType
       })).unwrap();
+      
       toast.success('Login successful!');
-      navigate('/');
+      
+      if (result.userType === 'doctor') {
+        navigate('/doctor/dashboard');
+      } else {
+        navigate('/');
+      }
     } catch (error) {
       toast.error('Login failed. Please try again.');
     }
@@ -46,13 +54,20 @@ const Login = () => {
   const handleEmailSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await dispatch(signupWithEmail({
+      const result = await dispatch(signupWithEmail({
         email: emailForm.email,
         password: emailForm.password,
         name: emailForm.name,
+        userType,
       })).unwrap();
+      
       toast.success('Account created successfully!');
-      navigate('/');
+      
+      if (result.userType === 'doctor') {
+        navigate('/doctor/dashboard');
+      } else {
+        navigate('/');
+      }
     } catch (error) {
       toast.error('Signup failed. Please try again.');
     }
@@ -70,12 +85,19 @@ const Login = () => {
   const handleOTPVerification = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await dispatch(loginWithOTP({
+      const result = await dispatch(loginWithOTP({
         phone: otpForm.phone,
         otp: otpForm.otp,
+        userType,
       })).unwrap();
+      
       toast.success('Login successful!');
-      navigate('/');
+      
+      if (result.userType === 'doctor') {
+        navigate('/doctor/dashboard');
+      } else {
+        navigate('/');
+      }
     } catch (error) {
       toast.error('OTP verification failed. Please try again.');
     }
@@ -95,12 +117,41 @@ const Login = () => {
         </div>
 
         <Card className="shadow-lg border-0">
-          <CardHeader className="space-y-1">
+          <CardHeader className="space-y-4">
             <CardTitle className="text-2xl text-center">Welcome</CardTitle>
             <CardDescription className="text-center">
               Sign in to your account or create a new one
             </CardDescription>
+            
+            {/* User Type Selection */}
+            <div className="flex space-x-2 bg-gray-100 p-1 rounded-lg">
+              <button
+                type="button"
+                onClick={() => setUserType('patient')}
+                className={`flex-1 flex items-center justify-center space-x-2 py-2 px-4 rounded-md transition-all ${
+                  userType === 'patient' 
+                    ? 'bg-white shadow-sm text-blue-600' 
+                    : 'text-gray-600 hover:text-gray-800'
+                }`}
+              >
+                <User className="h-4 w-4" />
+                <span className="text-sm font-medium">Patient</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setUserType('doctor')}
+                className={`flex-1 flex items-center justify-center space-x-2 py-2 px-4 rounded-md transition-all ${
+                  userType === 'doctor' 
+                    ? 'bg-white shadow-sm text-blue-600' 
+                    : 'text-gray-600 hover:text-gray-800'
+                }`}
+              >
+                <Stethoscope className="h-4 w-4" />
+                <span className="text-sm font-medium">Doctor</span>
+              </button>
+            </div>
           </CardHeader>
+          
           <CardContent>
             <Tabs defaultValue="login" className="space-y-4">
               <TabsList className="grid w-full grid-cols-2">
@@ -202,7 +253,7 @@ const Login = () => {
                       type="text"
                       value={emailForm.name}
                       onChange={(e) => setEmailForm(prev => ({ ...prev, name: e.target.value }))}
-                      placeholder="Enter your full name"
+                      placeholder={userType === 'doctor' ? 'Dr. Your Name' : 'Enter your full name'}
                       required
                     />
                   </div>
@@ -229,7 +280,7 @@ const Login = () => {
                     />
                   </div>
                   <Button type="submit" className="w-full" disabled={loading}>
-                    {loading ? 'Creating Account...' : 'Create Account'}
+                    {loading ? 'Creating Account...' : `Create ${userType === 'doctor' ? 'Doctor' : 'Patient'} Account`}
                   </Button>
                 </form>
               </TabsContent>

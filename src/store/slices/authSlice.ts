@@ -6,6 +6,13 @@ interface User {
   email: string;
   name: string;
   phone?: string;
+  userType: 'patient' | 'doctor';
+  specialization?: string;
+  profilePicture?: string;
+  bio?: string;
+  consultationCharge?: number;
+  availableTimes?: string[];
+  verified?: boolean;
 }
 
 interface AuthState {
@@ -25,40 +32,59 @@ const initialState: AuthState = {
 // Mock API functions - replace these with actual API calls
 export const loginWithEmail = createAsyncThunk(
   'auth/loginWithEmail',
-  async ({ email, password }: { email: string; password: string }) => {
-    // Simulate API call
+  async ({ email, password, userType }: { email: string; password: string; userType: 'patient' | 'doctor' }) => {
     await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    if (userType === 'doctor') {
+      return {
+        id: 'doc1',
+        email,
+        name: 'Dr. Sarah Johnson',
+        phone: '+1234567890',
+        userType: 'doctor' as const,
+        specialization: 'Cardiology',
+        bio: 'Experienced cardiologist with 10+ years of practice',
+        consultationCharge: 150,
+        verified: true
+      };
+    }
+    
     return {
       id: '1',
       email,
       name: 'John Doe',
-      phone: '+1234567890'
+      phone: '+1234567890',
+      userType: 'patient' as const
     };
   }
 );
 
 export const signupWithEmail = createAsyncThunk(
   'auth/signupWithEmail',
-  async ({ email, password, name }: { email: string; password: string; name: string }) => {
+  async ({ email, password, name, userType }: { email: string; password: string; name: string; userType: 'patient' | 'doctor' }) => {
     await new Promise(resolve => setTimeout(resolve, 1000));
     return {
-      id: '1',
+      id: userType === 'doctor' ? 'doc1' : '1',
       email,
       name,
-      phone: ''
+      phone: '',
+      userType,
+      ...(userType === 'doctor' && { specialization: 'General Practice', verified: false })
     };
   }
 );
 
 export const loginWithOTP = createAsyncThunk(
   'auth/loginWithOTP',
-  async ({ phone, otp }: { phone: string; otp: string }) => {
+  async ({ phone, otp, userType }: { phone: string; otp: string; userType: 'patient' | 'doctor' }) => {
     await new Promise(resolve => setTimeout(resolve, 1000));
     return {
-      id: '1',
+      id: userType === 'doctor' ? 'doc1' : '1',
       email: 'user@example.com',
-      name: 'John Doe',
-      phone
+      name: userType === 'doctor' ? 'Dr. John Doe' : 'John Doe',
+      phone,
+      userType,
+      ...(userType === 'doctor' && { specialization: 'General Practice', verified: true })
     };
   }
 );
@@ -74,6 +100,11 @@ const authSlice = createSlice({
     },
     clearError: (state) => {
       state.error = null;
+    },
+    updateProfile: (state, action) => {
+      if (state.user) {
+        state.user = { ...state.user, ...action.payload };
+      }
     },
   },
   extraReducers: (builder) => {
@@ -120,5 +151,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout, clearError } = authSlice.actions;
+export const { logout, clearError, updateProfile } = authSlice.actions;
 export default authSlice.reducer;
