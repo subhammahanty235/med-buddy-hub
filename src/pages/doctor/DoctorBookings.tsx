@@ -1,5 +1,5 @@
-
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DoctorLayout from '@/components/DoctorLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { fetchDoctorBookings, setFilters, updateBookingNotes } from '@/store/slices/doctorBookingsSlice';
+import { startCommunicationSession } from '@/store/slices/communicationSlice';
 import { 
   Calendar, 
   Clock, 
@@ -22,11 +23,13 @@ import {
   Download,
   Edit,
   Save,
-  X
+  X,
+  Play
 } from 'lucide-react';
 import { toast } from 'sonner';
 
 const DoctorBookings = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { bookings, loading, filters } = useAppSelector((state) => state.doctorBookings);
   const [editingBooking, setEditingBooking] = useState<string | null>(null);
@@ -49,6 +52,15 @@ const DoctorBookings = () => {
     }
     return true;
   });
+
+  const handleStartSession = async (booking: any) => {
+    await dispatch(startCommunicationSession({
+      doctorId: 'doctor_1',
+      patientId: booking.patientId,
+      appointmentType: booking.type
+    }));
+    navigate('/doctor/communication');
+  };
 
   const handleStartEdit = (booking: any) => {
     setEditingBooking(booking.id);
@@ -109,6 +121,16 @@ const DoctorBookings = () => {
             <Badge variant="outline">
               ${booking.consultationFee}
             </Badge>
+            {!isPast && (
+              <Button 
+                size="sm"
+                onClick={() => handleStartSession(booking)}
+                className="bg-green-600 hover:bg-green-700"
+              >
+                <Play className="h-3 w-3 mr-1" />
+                Start Session
+              </Button>
+            )}
           </div>
         </div>
       </CardHeader>

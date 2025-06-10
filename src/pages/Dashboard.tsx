@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/Layout';
@@ -8,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { fetchBookings } from '@/store/slices/bookingsSlice';
+import { startCommunicationSession } from '@/store/slices/communicationSlice';
 import { fetchBlogs } from '@/store/slices/blogsSlice';
 import { 
   MessageCircle, 
@@ -19,7 +19,9 @@ import {
   Stethoscope,
   Heart,
   Brain,
-  Users
+  Users,
+  Video,
+  Play
 } from 'lucide-react';
 
 const Dashboard = () => {
@@ -35,6 +37,15 @@ const Dashboard = () => {
 
   const upcomingBookings = bookings.filter(booking => booking.status === 'upcoming');
   const pastBookings = bookings.filter(booking => booking.status === 'completed');
+
+  const handleJoinSession = async (booking: any) => {
+    await dispatch(startCommunicationSession({
+      doctorId: booking.doctorId,
+      patientId: 'patient_1',
+      appointmentType: booking.type
+    }));
+    navigate('/communication/patient');
+  };
 
   const features = [
     {
@@ -169,13 +180,30 @@ const Dashboard = () => {
                 <div className="space-y-3">
                   {upcomingBookings.slice(0, 3).map((booking) => (
                     <div key={booking.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                      <div>
+                      <div className="flex-1">
                         <p className="font-medium">{booking.doctorName}</p>
                         <p className="text-sm text-gray-600">{booking.specialization}</p>
+                        <div className="flex items-center space-x-2 mt-1">
+                          <p className="text-sm font-medium">{booking.date}</p>
+                          <p className="text-sm text-gray-600">{booking.time}</p>
+                        </div>
                       </div>
-                      <div className="text-right">
-                        <p className="text-sm font-medium">{booking.date}</p>
-                        <p className="text-sm text-gray-600">{booking.time}</p>
+                      <div className="flex items-center space-x-2">
+                        <Badge variant={booking.type === 'video' ? 'default' : 'secondary'}>
+                          {booking.type === 'video' ? <Video className="h-3 w-3 mr-1" /> : <MessageCircle className="h-3 w-3 mr-1" />}
+                          {booking.type === 'video' ? 'Video' : 'Chat'}
+                        </Badge>
+                        <Button 
+                          size="sm" 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleJoinSession(booking);
+                          }}
+                          className="bg-green-600 hover:bg-green-700"
+                        >
+                          <Play className="h-3 w-3 mr-1" />
+                          Join
+                        </Button>
                       </div>
                     </div>
                   ))}

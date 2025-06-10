@@ -43,6 +43,36 @@ const mockBookings: Booking[] = [
     doctorId: '2',
     doctorName: 'Dr. Michael Chen',
     specialization: 'Dermatology',
+    date: '2024-01-22',
+    time: '2:00 PM',
+    status: 'upcoming',
+    type: 'chat'
+  },
+  {
+    id: '3',
+    doctorId: '3',
+    doctorName: 'Dr. Emily Rodriguez',
+    specialization: 'Neurology',
+    date: '2024-01-25',
+    time: '4:00 PM',
+    status: 'upcoming',
+    type: 'video'
+  },
+  {
+    id: '4',
+    doctorId: '4',
+    doctorName: 'Dr. James Wilson',
+    specialization: 'General Medicine',
+    date: '2024-01-28',
+    time: '11:00 AM',
+    status: 'upcoming',
+    type: 'chat'
+  },
+  {
+    id: '5',
+    doctorId: '2',
+    doctorName: 'Dr. Michael Chen',
+    specialization: 'Dermatology',
     date: '2024-01-10',
     time: '2:00 PM',
     status: 'completed',
@@ -52,7 +82,7 @@ const mockBookings: Booking[] = [
     prescription: 'Hydrocortisone cream 1% - Apply twice daily'
   },
   {
-    id: '3',
+    id: '6',
     doctorId: '3',
     doctorName: 'Dr. Emily Rodriguez',
     specialization: 'Neurology',

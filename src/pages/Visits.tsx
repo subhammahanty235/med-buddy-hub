@@ -1,12 +1,14 @@
-
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { fetchBookings } from '@/store/slices/bookingsSlice';
+import { startCommunicationSession } from '@/store/slices/communicationSlice';
 import { 
   Calendar, 
   Clock, 
@@ -16,10 +18,12 @@ import {
   Pill,
   Video,
   CheckCircle,
-  AlertCircle
+  AlertCircle,
+  Play
 } from 'lucide-react';
 
 const Visits = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { bookings, loading } = useAppSelector((state) => state.bookings);
 
@@ -29,6 +33,15 @@ const Visits = () => {
 
   const upcomingBookings = bookings.filter(booking => booking.status === 'upcoming');
   const pastBookings = bookings.filter(booking => booking.status === 'completed');
+
+  const handleJoinSession = async (booking: any) => {
+    await dispatch(startCommunicationSession({
+      doctorId: booking.doctorId,
+      patientId: 'patient_1',
+      appointmentType: booking.type
+    }));
+    navigate('/communication/patient');
+  };
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -62,6 +75,16 @@ const Visits = () => {
               {isPast ? <CheckCircle className="h-3 w-3 mr-1" /> : <AlertCircle className="h-3 w-3 mr-1" />}
               {booking.status}
             </Badge>
+            {!isPast && (
+              <Button 
+                size="sm"
+                onClick={() => handleJoinSession(booking)}
+                className="bg-green-600 hover:bg-green-700"
+              >
+                <Play className="h-3 w-3 mr-1" />
+                Join
+              </Button>
+            )}
           </div>
         </div>
       </CardHeader>

@@ -1,4 +1,3 @@
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 export interface DoctorBooking {
@@ -60,6 +59,39 @@ const mockDoctorBookings: DoctorBooking[] = [
     patientId: 'p2',
     patientName: 'Bob Smith',
     patientPhone: '+1234567891',
+    date: '2024-01-24',
+    time: '2:00 PM',
+    status: 'upcoming',
+    type: 'chat',
+    consultationFee: 120
+  },
+  {
+    id: '3',
+    patientId: 'p3',
+    patientName: 'Carol Davis',
+    patientPhone: '+1234567892',
+    date: '2024-01-26',
+    time: '4:00 PM',
+    status: 'upcoming',
+    type: 'video',
+    consultationFee: 150
+  },
+  {
+    id: '4',
+    patientId: 'p4',
+    patientName: 'David Brown',
+    patientPhone: '+1234567893',
+    date: '2024-01-28',
+    time: '11:00 AM',
+    status: 'upcoming',
+    type: 'chat',
+    consultationFee: 120
+  },
+  {
+    id: '5',
+    patientId: 'p2',
+    patientName: 'Bob Smith',
+    patientPhone: '+1234567891',
     date: '2024-01-15',
     time: '2:00 PM',
     status: 'completed',
@@ -75,7 +107,7 @@ const mockDoctorBookings: DoctorBooking[] = [
     }
   },
   {
-    id: '3',
+    id: '6',
     patientId: 'p3',
     patientName: 'Carol Davis',
     patientPhone: '+1234567892',
