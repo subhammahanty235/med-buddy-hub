@@ -6,7 +6,7 @@ interface User {
   email: string;
   name: string;
   phone?: string;
-  userType: 'patient' | 'doctor';
+  userType: 'patient' | 'doctor' | 'admin';
   specialization?: string;
   profilePicture?: string;
   bio?: string;
@@ -32,8 +32,23 @@ const initialState: AuthState = {
 // Mock API functions - replace these with actual API calls
 export const loginWithEmail = createAsyncThunk(
   'auth/loginWithEmail',
-  async ({ email, password, userType }: { email: string; password: string; userType: 'patient' | 'doctor' }) => {
+  async ({ email, password, userType }: { email: string; password: string; userType: 'patient' | 'doctor' | 'admin' }) => {
     await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    if (userType === 'admin') {
+      // Admin login validation
+      if (email === 'admin@healthcare.com' && password === 'admin123') {
+        return {
+          id: 'admin1',
+          email,
+          name: 'Admin User',
+          phone: '+1234567890',
+          userType: 'admin' as const
+        };
+      } else {
+        throw new Error('Invalid admin credentials');
+      }
+    }
     
     if (userType === 'doctor') {
       return {

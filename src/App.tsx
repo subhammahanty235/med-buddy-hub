@@ -21,6 +21,11 @@ import DoctorFeedback from "./pages/doctor/DoctorFeedback";
 import DoctorProfile from "./pages/doctor/DoctorProfile";
 import DoctorSupport from "./pages/doctor/DoctorSupport";
 import CommunicationDemo from "./pages/CommunicationDemo";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminDoctors from "./pages/admin/AdminDoctors";
+import AdminUsers from "./pages/admin/AdminUsers";
+import AdminFeedback from "./pages/admin/AdminFeedback";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +38,39 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/login" element={<Login />} />
+            
+            {/* Admin Routes */}
+            <Route path="/admin" element={<AdminLogin />} />
+            <Route path="/admin/dashboard" element={
+              <ProtectedRoute userType="admin">
+                <AdminDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/doctors" element={
+              <ProtectedRoute userType="admin">
+                <AdminDoctors />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/users" element={
+              <ProtectedRoute userType="admin">
+                <AdminUsers />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/feedback" element={
+              <ProtectedRoute userType="admin">
+                <AdminFeedback />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/analytics" element={
+              <ProtectedRoute userType="admin">
+                <Navigate to="/admin/dashboard" />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/settings" element={
+              <ProtectedRoute userType="admin">
+                <Navigate to="/admin/dashboard" />
+              </ProtectedRoute>
+            } />
             
             {/* Patient Routes */}
             <Route path="/" element={
