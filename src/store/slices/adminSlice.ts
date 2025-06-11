@@ -1,4 +1,3 @@
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 export interface AdminDoctor {
@@ -56,11 +55,41 @@ export interface DoctorFeedback {
   priority: 'low' | 'medium' | 'high';
 }
 
+export interface DoctorAnalytics {
+  totalEarnings: number;
+  monthlyGrowth: number;
+  activeHours: number;
+  totalPatients: number;
+  newPatientsThisMonth: number;
+  totalConsultations: number;
+  consultationsThisMonth: number;
+  rating: number;
+  avgResponseTime: number;
+  successRate: number;
+  noShowRate: number;
+  monthlyPayments: {
+    id: string;
+    month: string;
+    amount: number;
+    status: 'paid' | 'pending' | 'processing';
+  }[];
+  recentActivity: {
+    id: string;
+    date: string;
+    patientName: string;
+    type: 'video' | 'chat';
+    duration: number;
+    status: 'completed' | 'cancelled';
+    fee: number;
+  }[];
+}
+
 interface AdminState {
   doctors: AdminDoctor[];
   users: PlatformUser[];
   metrics: PlatformMetrics | null;
   feedbacks: DoctorFeedback[];
+  doctorAnalytics: DoctorAnalytics | null;
   loading: boolean;
   error: string | null;
 }
@@ -70,6 +99,7 @@ const initialState: AdminState = {
   users: [],
   metrics: null,
   feedbacks: [],
+  doctorAnalytics: null,
   loading: false,
   error: null,
 };
@@ -171,6 +201,55 @@ const mockFeedbacks: DoctorFeedback[] = [
   }
 ];
 
+const mockDoctorAnalytics: DoctorAnalytics = {
+  totalEarnings: 25400,
+  monthlyGrowth: 15.2,
+  activeHours: 156,
+  totalPatients: 89,
+  newPatientsThisMonth: 12,
+  totalConsultations: 234,
+  consultationsThisMonth: 42,
+  rating: 4.8,
+  avgResponseTime: 3.5,
+  successRate: 94.2,
+  noShowRate: 5.8,
+  monthlyPayments: [
+    { id: '1', month: 'January 2024', amount: 4200, status: 'paid' },
+    { id: '2', month: 'December 2023', amount: 3800, status: 'paid' },
+    { id: '3', month: 'November 2023', amount: 4100, status: 'paid' },
+    { id: '4', month: 'February 2024', amount: 1500, status: 'pending' },
+  ],
+  recentActivity: [
+    {
+      id: '1',
+      date: '2024-01-20',
+      patientName: 'John Smith',
+      type: 'video',
+      duration: 30,
+      status: 'completed',
+      fee: 150
+    },
+    {
+      id: '2',
+      date: '2024-01-19',
+      patientName: 'Sarah Johnson',
+      type: 'chat',
+      duration: 15,
+      status: 'completed',
+      fee: 75
+    },
+    {
+      id: '3',
+      date: '2024-01-18',
+      patientName: 'Mike Davis',
+      type: 'video',
+      duration: 45,
+      status: 'cancelled',
+      fee: 0
+    }
+  ]
+};
+
 export const fetchAdminDoctors = createAsyncThunk(
   'admin/fetchDoctors',
   async () => {
@@ -239,6 +318,14 @@ export const createDoctorProfile = createAsyncThunk(
   }
 );
 
+export const fetchDoctorAnalytics = createAsyncThunk(
+  'admin/fetchDoctorAnalytics',
+  async (doctorId: string) => {
+    await new Promise(resolve => setTimeout(resolve, 800));
+    return mockDoctorAnalytics;
+  }
+);
+
 const adminSlice = createSlice({
   name: 'admin',
   initialState,
@@ -282,6 +369,18 @@ const adminSlice = createSlice({
       })
       .addCase(createDoctorProfile.fulfilled, (state, action) => {
         state.doctors.unshift(action.payload);
+      })
+      .addCase(fetchDoctorAnalytics.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchDoctorAnalytics.fulfilled, (state, action) => {
+        state.loading = false;
+        state.doctorAnalytics = action.payload;
+      })
+      .addCase(fetchDoctorAnalytics.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Failed to fetch doctor analytics';
       });
   },
 });

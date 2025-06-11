@@ -24,6 +24,7 @@ import CommunicationDemo from "./pages/CommunicationDemo";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminDoctors from "./pages/admin/AdminDoctors";
+import AdminDoctorDetails from "./pages/admin/AdminDoctorDetails";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminFeedback from "./pages/admin/AdminFeedback";
 
@@ -49,6 +50,11 @@ const App = () => (
             <Route path="/admin/doctors" element={
               <ProtectedRoute userType="admin">
                 <AdminDoctors />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/doctors/:doctorId" element={
+              <ProtectedRoute userType="admin">
+                <AdminDoctorDetails />
               </ProtectedRoute>
             } />
             <Route path="/admin/users" element={

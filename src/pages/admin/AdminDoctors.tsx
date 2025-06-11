@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -16,6 +17,7 @@ import { toast } from 'sonner';
 import AdminLayout from '@/components/AdminLayout';
 
 const AdminDoctors = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { doctors, loading } = useAppSelector((state) => state.admin);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
@@ -226,7 +228,11 @@ const AdminDoctors = () => {
                               </Button>
                             </>
                           )}
-                          <Button size="sm" variant="outline">
+                          <Button 
+                            size="sm" 
+                            variant="outline"
+                            onClick={() => navigate(`/admin/doctors/${doctor.id}`)}
+                          >
                             <Eye className="h-4 w-4" />
                           </Button>
                         </div>
